@@ -4,7 +4,7 @@
 
 ## About
 
-Page Forms is an extension to MediaWiki that aäällows for the
+Page Forms is an extension to MediaWiki that allows for the
 creation of forms that can be used to create and edit pages. It can
 work by itself, or in conjuction with two other extensions that
 both handle the storage of data: Cargo and Semantic MediaWiki.
