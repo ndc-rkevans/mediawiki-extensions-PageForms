@@ -60,20 +60,6 @@ Solitarius, Tombolano, Tom Fellows, Vedmaka, wheresmytab and others.
 Language translations were provided by many people; see the files in
 the /i18n and /languages directories for the full listings.
 
-## Contact
-
-Comments, questions and suggestions should be sent to the MediaWiki
-or mailing list:
-
- https://lists.wikimedia.org/mailman/listinfo/mediawiki-l
-
-If possible, please add "[Page Forms]" at the beginning of the subject
-line, to clarify the subject matter.
-
-Bug reports should be submitted at the Wikimedia Phabricator site:
-
- https://phabricator.wikimedia.org/maniphest/task/create/
-
 ## Credits to other projects
 
 Page Forms includes the following JavaScript libraries:
