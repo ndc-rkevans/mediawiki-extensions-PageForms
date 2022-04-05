@@ -162,7 +162,8 @@
 		"PFWikiPageTemplateParam": "includes/wikipage/PF_WikiPageTemplateParam.php",
 		"PFWikiPageSection": "includes/wikipage/PF_WikiPageSection.php",
 		"PFWikiPageFreeText": "includes/wikipage/PF_WikiPageFreeText.php",
-		"PFCreatePageJob": "includes/PF_CreatePageJob.php"
+		"PFCreatePageJob": "includes/PF_CreatePageJob.php",
+		"IntegrationTestHelpers": "tests/phpunit/integration/IntegrationTestHelpers.php"
 	},
 	"ResourceModules": {
 		"ext.pageforms.main": {

@@ -7,6 +7,13 @@
  */
 class PFCreateFormTest extends MediaWikiIntegrationTestCase {
 
+	use IntegrationTestHelpers;
+
+	public function setUp(): void {
+		parent::setUp();
+		$this->requireLanguageCodeEn();
+	}
+
 	public function testGet() {
 		$createForm = new PFCreateForm();
 

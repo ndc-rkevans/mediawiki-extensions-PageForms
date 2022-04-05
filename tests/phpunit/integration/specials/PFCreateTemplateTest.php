@@ -7,6 +7,13 @@
  */
 class PFCreateTemplateTest extends MediaWikiIntegrationTestCase {
 
+	use IntegrationTestHelpers;
+
+	public function setUp(): void {
+		parent::setUp();
+		$this->requireLanguageCodeEn();
+	}
+
 	public function testGetCreatePage() {
 		$createTemplate = new PFCreateTemplate();
 
