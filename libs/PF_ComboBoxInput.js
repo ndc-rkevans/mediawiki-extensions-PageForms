@@ -5,6 +5,7 @@
  *
  * @class
  * @extends OO.ui.ComboBoxInputWidget
+ * @mixin OO.ui.mixin.PendingElement;
  *
  * @license GNU GPL v2+
  * @author Jatin Mehta
@@ -18,8 +19,11 @@
     pf.ComboBoxInput = function (config) {
         this.config = config || {}
         OO.ui.ComboBoxInputWidget.call(this, config);
+        OO.ui.mixin.PendingElement.call(this, { $pending: this.$input });
     };
     OO.inheritClass(pf.ComboBoxInput, OO.ui.ComboBoxInputWidget);
+    OO.mixinClass(pf.ComboBoxInput, OO.ui.mixin.PendingElement);
+
     pf.ComboBoxInput.prototype.apply = function (element) {
         // Apply ComboBoxInput to the element
         this.setInputAttribute('name', element.attr('name'));
@@ -101,6 +105,7 @@
             } else {
                 my_server += "?action=pfautocomplete&format=json&" + data_type + "=" + data_source + "&substr=" + curValue;
             }
+            self.pushPending();
             $.ajax({
                 url: my_server,
                 dataType: 'json',
@@ -128,6 +133,9 @@
                         });
                     }
                     self.setOptions(values);
+                },
+                complete: function() {
+                    self.popPending();
                 }
             });
         } else {
