@@ -107,18 +107,19 @@
                 success: function (Data) {
                     if (Data.pfautocomplete !== undefined) {
                         Data = Data.pfautocomplete;
-                        if (Data.length == 0) {
+                        if (Data.length === 0) {
                             values.push({
                                 data:self.getValue(), label: mw.message('pf-autocomplete-no-matches').text(), disabled: true
                             });
                         } else {
                             for ( i = 0; i < Data.length; i++ ) {
-                                if ( Data[i].title == self.getValue() ){
+                                const title = Data[i].displaytitle || Data[i].title;
+                                if ( title === self.getValue() ){
                                     self.itemFound = true;
                                 }
                                 values.push({
-                                    data: Data[i].title, label: self.highlightText(Data[i].title)
-                                })
+                                    data: title, label: self.highlightText(title)
+                                });
                             }
                         }
                     } else {
