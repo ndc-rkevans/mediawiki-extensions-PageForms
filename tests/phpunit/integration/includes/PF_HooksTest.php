@@ -14,15 +14,19 @@ class PFHooksTest extends MediaWikiIntegrationTestCase {
 		parent::setUp();
 	}
 
-	public function testRunThroughOnly() {
+	public function testVisitSomeLinesOfCodeOnly() {
+		self::expectNotToPerformAssertions();
+
 		PFHooks::registerExtension();
 		PFHooks::initialize();
-		$resourceLoader = new ResourceLoader();
+
+		$resourceLoader = $this->createStub(ResourceLoader::class);
 		PFHooks::registerModules( $resourceLoader );
+
 		$list = [];
 		PFHooks::registerNamespaces( $list );
-		$parser = new Parser();
+
+		$parser = $this->createStub( Parser::class );
 		PFHooks::registerFunctions( $parser );
-		$this->assertTrue( true );
 	}
 }
