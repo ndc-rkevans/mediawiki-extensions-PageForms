@@ -7,7 +7,7 @@ EXTENSION_FOLDER := /var/www/html/extensions/$(EXTENSION)
 IMAGE_NAME := $(shell echo $(EXTENSION) | tr A-Z a-z}):test-$(MW_VERSION)-$(SMW_VERSION)
 PWD := $(shell bash -c "pwd -W 2>/dev/null || pwd")# this way it works on Windows and Linux
 DOCKER_RUN_ARGS := --rm -v $(PWD)/coverage:$(EXTENSION_FOLDER)/coverage -w $(EXTENSION_FOLDER) $(IMAGE_NAME)
-DOCKER_RUN := docker run $(DOCKER_RUN_ARGS)
+docker_run := docker run $(DOCKER_RUN_ARGS)
 
 .PHONY: all
 all:
@@ -35,23 +35,29 @@ test-coverage: composer-test-coverage npm-test-coverage
 
 .PHONY: composer-test
 composer-test:
-	$(DOCKER_RUN) composer test
+	$(docker_run) composer test
 
 .PHONY: composer-test-coverage
 composer-test-coverage:
-	$(DOCKER_RUN) composer test-coverage
+	$(docker_run) composer test-coverage
 
 .PHONY: npm-test
 npm-test:
-	$(DOCKER_RUN) npm run test
+	$(docker_run) npm run test
 
 .PHONY: npm-test-coverage
 npm-test-coverage:
-	$(DOCKER_RUN) npm run test-coverage
+	$(docker_run) npm run test-coverage
 
 .PHONY: bash
 bash:
 	docker run -it -v $(PWD):/src $(DOCKER_RUN_ARGS) bash
+
+.PHONY: dev-bash
+dev-bash:
+	docker run -it --rm -p 8080:8080 \
+		-v $(PWD):$(EXTENSION_FOLDER) -v $(EXTENSION_FOLDER)/node_modules/ -v $(EXTENSION_FOLDER)/vendor/ \
+		-w $(EXTENSION_FOLDER) $(IMAGE_NAME) bash -c 'service apache2 start && bash'
 
 # ======== Releasing ========
 

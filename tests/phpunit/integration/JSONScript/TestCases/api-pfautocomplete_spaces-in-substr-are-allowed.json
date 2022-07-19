@@ -1,0 +1,78 @@
+{
+	"description": "Test API `action=pfautocomplete` spaces in substr are allowed in both title and display title search",
+	"setup": [
+		{
+			"page": "Foo Bar 1",
+			"contents": "[[Category:Category]]"
+		},
+		{
+			"page": "Foo Bar 2",
+			"contents": "[[Category:Category]]{{DISPLAYTITLE:Foo Bar 2 DT}}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept",
+			"contents": "{{#concept: [[Category:Category]]}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "api",
+			"about": "spaces in substr are allowed in namespace search",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"namespace": "",
+					"substr": "Foo Bar"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"0\":{\"title\":\"Foo Bar 1\",\"displaytitle\":\"Foo Bar 1\"},\"1\":{\"title\":\"Foo Bar 2\",\"displaytitle\":\"Foo Bar 2 DT\"},\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		},
+		{
+			"type": "api",
+			"about": "spaces in substr are allowed in category search",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"category": "Category",
+					"substr": "Foo Bar"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"0\":{\"title\":\"Foo Bar 1\",\"displaytitle\":\"Foo Bar 1\"},\"1\":{\"title\":\"Foo Bar 2\",\"displaytitle\":\"Foo Bar 2 DT\"},\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		},
+		{
+			"type": "api",
+			"about": "spaces in substr are allowed in concept search",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"concept": "Concept",
+					"substr": "Foo Bar"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"0\":{\"title\":\"Foo Bar 1\",\"displaytitle\":\"Foo Bar 1\"},\"1\":{\"title\":\"Foo Bar 2\",\"displaytitle\":\"Foo Bar 2 DT\"},\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		}
+	],
+	"settings": {
+		"wgAllowDisplayTitle": true,
+		"wgRestrictDisplayTitle": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_CONCEPT": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

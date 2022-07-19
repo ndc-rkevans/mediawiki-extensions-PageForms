@@ -1,0 +1,59 @@
+{
+	"description": "Test API `action=pfautocomplete` substr and concept are respected",
+	"setup": [
+		{
+			"page": "Foo1",
+			"contents": "[[Category:Category1]]"
+		},
+		{
+			"page": "Foo2",
+			"contents": "[[Category:Category2]]"
+		},
+		{
+			"page": "Bar1",
+			"contents": "[[Category:Category1]]"
+		},
+		{
+			"page": "Bar2",
+			"contents": "[[Category:Category2]]"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept1",
+			"contents": "{{#concept: [[Category:Category1]]}}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept2",
+			"contents": "{{#concept: [[Category:Category2]]}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "api",
+			"about": "page is a result if and only if substr matches and category matches",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"concept": "Concept1",
+					"substr": "Foo"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"0\":{\"title\":\"Foo1\",\"displaytitle\":\"Foo1\"},\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_CONCEPT": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

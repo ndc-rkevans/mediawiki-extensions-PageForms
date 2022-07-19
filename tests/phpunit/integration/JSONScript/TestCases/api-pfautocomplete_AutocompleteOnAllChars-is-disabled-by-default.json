@@ -1,0 +1,123 @@
+{
+	"description": "Test API `action=pfautocomplete` AutocompleteOnAllChars is disabled by default",
+	"setup": [
+		{
+			"page": "Page1 FooBar",
+			"contents": "[[Category:Category]]"
+		},
+		{
+			"page": "Page2",
+			"contents": "[[Category:Category]]{{DISPLAYTITLE:Page2 DT FooBar}}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept",
+			"contents": "{{#concept: [[Category:Category]]}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "api",
+			"about": "namespace search finds pages matching at the beginning of words",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"namespace": "",
+					"substr": "Foo"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"0\":{\"title\":\"Page1 FooBar\",\"displaytitle\":\"Page1 FooBar\"},\"1\":{\"title\":\"Page2\",\"displaytitle\":\"Page2 DT FooBar\"},\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		},
+		{
+			"type": "api",
+			"about": "namespace search doesn't find pages matching in the middle of words",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"namespace": "",
+					"substr": "Bar"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		},
+		{
+			"type": "api",
+			"about": "category search finds pages matching at the beginning of words",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"category": "Category",
+					"substr": "Foo"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"0\":{\"title\":\"Page1 FooBar\",\"displaytitle\":\"Page1 FooBar\"},\"1\":{\"title\":\"Page2\",\"displaytitle\":\"Page2 DT FooBar\"},\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		},
+		{
+			"type": "api",
+			"about": "category search doesn't find pages matching in the middle of words",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"category": "Category",
+					"substr": "Bar"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		},
+		{
+			"type": "api",
+			"about": "concept search finds pages matching at the beginning of words",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"concept": "Concept",
+					"substr": "Foo"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"0\":{\"title\":\"Page1 FooBar\",\"displaytitle\":\"Page1 FooBar\"},\"1\":{\"title\":\"Page2\",\"displaytitle\":\"Page2 DT FooBar\"},\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		},
+		{
+			"type": "api",
+			"about": "concept search doesn't find pages matching in the middle of words",
+			"api": {
+				"parameters": {
+					"action": "pfautocomplete",
+					"format": "json",
+					"concept": "Concept",
+					"substr": "Bar"
+				}
+			},
+			"assert-output": {
+				"to-contain": "{\"pfautocomplete\":{\"_element\":\"p\"},\"_type\":\"assoc\"}"
+			}
+		}
+	],
+	"settings": {
+		"wgAllowDisplayTitle": true,
+		"wgRestrictDisplayTitle": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_CONCEPT": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
