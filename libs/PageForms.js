@@ -380,10 +380,15 @@ $.fn.setErrorMessage = function(msg, val) {
 };
 
 // Append an error message to the end of an input.
-$.fn.addErrorMessage = function(msg, val) {
-	this.find('input').addClass('inputError');
-	this.find('select2-container').addClass('inputError');
+$.fn.addErrorMessage = function(msg, val, $incorrectElements) {
+	// Remove error class from all relevant elements first (a previous error may have vanished by now)
+	const $relevantElements = this.find('input, select, select2-container');
+	$relevantElements.removeClass('inputError');
+
+	// Set input error and show message
+	($incorrectElements || $relevantElements).addClass('inputError');
 	this.append($('<div>').addClass( 'errorMessage' ).text( mw.msg( msg, val ) ));
+
 	// If this is part of a minimized multiple-template instance, add a
 	// red border around the instance rectangle to make it easier to find.
 	this.parents( '.multipleTemplateInstance.minimized' ).css( 'border', '1px solid red' );
@@ -583,14 +588,20 @@ $.fn.validateMandatoryComboBox = function() {
 };
 
 $.fn.validateMandatoryDateField = function() {
-	if (this.find(".dayInput").val() === '' ||
-		this.find(".monthInput").val() === '' ||
-		this.find(".yearInput").val() === '') {
-		this.addErrorMessage( 'pf_blank_error' );
+	const $year = this.find(".yearInput");
+	if ($year.val() === '') {
+		this.addErrorMessage( 'pf_blank_error', null, $year );
 		return false;
-	} else {
-		return true;
 	}
+
+	const $month = this.find(".monthInput");
+	const $day = this.find(".dayInput");
+	if ($day.val() !== '' && $month.val() === '') {
+		this.addErrorMessage( 'pf_blank_error', null, $month );
+		return false;
+	}
+
+	return true;
 };
 
 $.fn.validateMandatoryRadioButton = function() {

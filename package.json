@@ -4,8 +4,8 @@
 		"test": "npm run grunt-test && npm run node-qunit",
 		"test-coverage": "npm run grunt-test && npm run node-qunit-coverage",
 		"grunt-test": "grunt test",
-		"node-qunit": "qunit tests/node-qunit",
-		"node-qunit-coverage": "nyc --reporter=html --reporter=clover --all --include='libs/**' npm run node-qunit"
+		"node-qunit": "qunit --require ./tests/node-qunit/setup.js 'tests/node-qunit/**/*.test.js'",
+		"node-qunit-coverage": "nyc --reporter=text --reporter=html --reporter=clover --all --include='libs/**' npm run node-qunit"
 	},
 	"devDependencies": {
 		"eslint-config-wikimedia": "0.20.0",
@@ -14,8 +14,8 @@
 		"grunt-eslint": "23.0.0",
 		"jsdom": "^19.0.0",
 		"nyc": "^15.1.0",
-		"qunit": "^2.18.1",
-		"sinon": "^13.0.2"
+		"qunit": "^2.19.1",
+		"sinon": "^14.0.0"
 	},
 	"dependencies": {}
 }
