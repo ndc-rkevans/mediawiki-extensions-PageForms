@@ -201,8 +201,7 @@ class PFFormLink {
 				'type' => 'submit',
 				'label' => $inLinkStr,
 				'title' => $inTooltip,
-				'flags' => 'progressive',
-				'icon' => 'next'
+				'flags' => 'progressive'
 			];
 			$buttonHTML = new OOUI\ButtonInputWidget( $buttonAttrs );
 			$formAttrs = [
