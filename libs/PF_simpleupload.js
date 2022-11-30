@@ -8,6 +8,20 @@
  */
 
 ( function( $, mw ) {
+
+	function handleFilenameChanged(inputSpan, input, removeButton) {
+		inputSpan.find('img.simpleupload_prv').remove();
+		removeButton.$element.hide();
+		filename = input.val();
+		if ( filename !== '' && typeof filename !== 'undefined' ) {
+			var imagePreviewURL = mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent(filename));
+			imagePreviewURL += (imagePreviewURL.indexOf('?') === -1) ? '?' : '&';
+			imagePreviewURL += 'width=100';
+			inputSpan.prepend('<img alt="image preview" class="simpleupload_prv" src="' + imagePreviewURL + '">');
+			removeButton.$element.show();
+		}
+	}
+
 	$.fn.initializeSimpleUpload = function() {
 
 		var inputSpan = this.parent();
@@ -39,13 +53,12 @@
 		} );
 
 		var input,
-			cur_value = '',
 			loadingImage = inputSpan.find('img.loading');
 
 		// append a row of buttons for upload and remove
 		inputSpan.find('span.simpleUploadInterface').append(buttonRow.$element);
 
-		if ( inputSpan.attr('data-input-type') == 'combobox' ) {
+		if ( inputSpan.attr('data-input-type') === 'combobox' ) {
 			input = inputSpan.find('input[role="combobox"]');
 			loadingImage.remove();
 			inputSpan.prepend(loadingImage);
@@ -65,31 +78,23 @@
 			input = inputSpan.find('input.createboxInput');
 		}
 
-		cur_value = input.val();
-
-		// hide the remove button for now considering that no file is displayed
-		removeButton.$element.hide()
-
 		// remove the input part from SelectInputWidget leaving only button
 		inputSpan.find('div.oo-ui-actionFieldLayout-input').remove();
 
-		if ( inputSpan.attr('data-input-type') == 'text' ) {
+		if ( inputSpan.attr('data-input-type') === 'text' ) {
 			input.hide();
 		}
 
-		if ( cur_value !== '' && typeof cur_value !== 'undefined' ) {
-			var previewURL = mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent( cur_value ) );
-			inputSpan.prepend($('<img class="simpleupload_prv" src="' + previewURL + '">'));
+		handleFilenameChanged(inputSpan, input, removeButton);
 
-			// now display the remove button for removing the file displayed
-			removeButton.$element.show();
-		}
+		input.change( function(event) {
+			handleFilenameChanged(inputSpan, input, removeButton);
+		})
 
 		removeButton.$element.find('a').click( function () {
 			inputSpan.find('img.simpleupload_prv').remove();
-			cur_value = '';
 			input.val('');
-			removeButton.$element.hide();
+			handleFilenameChanged(inputSpan, input, removeButton);
 		});
 
 		inputSpan.find('span.simpleUploadInterface').find('input[type="file"]').change( function(event) {
@@ -115,18 +120,10 @@
 				success: function( data ) {
 					// do what you like, console logs are just for demonstration :-)
 					if ( !data.error ) {
-						cur_value = fileName;
-
 						// give the fileName to the field overwriting whatever was wrtitten there
 						input.val(fileName);
-
-						inputSpan.find('img.simpleupload_prv').remove();
-						var imagePreviewURL = mw.config.get('wgArticlePath').replace( '$1', 'Special:Redirect/file/' + encodeURIComponent( cur_value ) );
-						imagePreviewURL += ( imagePreviewURL.indexOf('?') === -1 ) ? '?' : '&';
-						imagePreviewURL += 'width=100';
-						inputSpan.prepend('<img class="simpleupload_prv" src="' + imagePreviewURL + '">');
+						handleFilenameChanged(inputSpan, input, removeButton);
 						loadingImage.hide();
-						removeButton.$element.show();
 					} else {
 						window.alert("Error: " + data.error.info);
 						// if any error pops up, just hide the remove button
