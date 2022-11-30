@@ -25,7 +25,9 @@
 	$.fn.initializeSimpleUpload = function() {
 
 		var inputSpan = this.parent();
-		var uploadWidget = new OO.ui.SelectFileInputWidget( {
+
+		var uploadWidget = new OO.ui.SelectFileWidget( {
+			buttonOnly: true,
 			button: {
 				flags: [
 					'progressive'
@@ -45,41 +47,20 @@
 			classes: [ 'simpleupload_rmv_btn' ]
 		} );
 
-		var buttonRow = new OO.ui.HorizontalLayout( {
-			items: [
-				uploadWidget,
-				removeButton
-			]
-		} );
-
 		var input,
 			loadingImage = inputSpan.find('img.loading');
 
 		// append a row of buttons for upload and remove
-		inputSpan.find('span.simpleUploadInterface').append(buttonRow.$element);
+		inputSpan.find('span.simpleUploadInterface').append(uploadWidget.$element);
+		inputSpan.find('span.simpleUploadInterface').append(removeButton.$element);
 
 		if ( inputSpan.attr('data-input-type') === 'combobox' ) {
 			input = inputSpan.find('input[role="combobox"]');
 			loadingImage.remove();
 			inputSpan.prepend(loadingImage);
-			// this has been done to align all buttons with combobox properly
-			// in a horizontal manner
-			inputSpan.find('span.simpleUploadInterface > div.oo-ui-layout').css( {
-				'display': 'inline',
-				'margin-left': '-15px'
-			} );
-			inputSpan.find('div.oo-ui-textInputWidget').css( {
-				'margin-top': '-15px',
-				'display': 'inline-block'
-			} );
-			inputSpan.find('div.simpleUpload').css('margin-top','-6px');
-			inputSpan.find('span.simpleupload_rmv_btn').css('margin-top','-6px');
 		} else {
 			input = inputSpan.find('input.createboxInput');
 		}
-
-		// remove the input part from SelectInputWidget leaving only button
-		inputSpan.find('div.oo-ui-actionFieldLayout-input').remove();
 
 		if ( inputSpan.attr('data-input-type') === 'text' ) {
 			input.hide();
