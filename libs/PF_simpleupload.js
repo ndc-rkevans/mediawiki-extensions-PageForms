@@ -72,16 +72,13 @@
 
 		// remove the input part from SelectInputWidget leaving only button
 		inputSpan.find('div.oo-ui-actionFieldLayout-input').remove();
-		// adjust the size of the parent div
-		inputSpan.find('div.simpleUpload').css('width', '100px');
+
 		if ( inputSpan.attr('data-input-type') == 'text' ) {
 			input.hide();
 		}
 
 		if ( cur_value !== '' && typeof cur_value !== 'undefined' ) {
 			var previewURL = mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent( cur_value ) );
-			previewURL += ( previewURL.indexOf('?') < 0 ) ? '?' : '&';
-			previewURL += 'width=100';
 			inputSpan.prepend($('<img class="simpleupload_prv" src="' + previewURL + '">'));
 
 			// now display the remove button for removing the file displayed

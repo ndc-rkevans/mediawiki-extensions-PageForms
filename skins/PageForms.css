@@ -70,6 +70,15 @@ span.mandatoryFieldsSpan {
 }
 
 /** INPUT FIELD STYLE */
+
+/* --- Simple Upload --- */
+#pfForm img.simpleupload_prv {
+	width: 150px;
+	margin-bottom: 10px;
+	display: block;
+}
+/* === Simple Upload === */
+
 #pfForm .createboxInput,
 #pfForm .mandatoryField,
 #pfForm textarea {
