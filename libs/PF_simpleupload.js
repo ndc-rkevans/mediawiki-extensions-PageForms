@@ -12,7 +12,7 @@
 	function handleFilenameChanged(inputSpan, input, removeButton) {
 		inputSpan.find('img.simpleupload_prv').remove();
 		removeButton.$element.hide();
-		filename = input.val();
+		let filename = input.val();
 		if ( filename !== '' && typeof filename !== 'undefined' ) {
 			var imagePreviewURL = mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent(filename));
 			imagePreviewURL += (imagePreviewURL.indexOf('?') === -1) ? '?' : '&';
