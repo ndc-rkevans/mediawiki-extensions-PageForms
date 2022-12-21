@@ -14,7 +14,8 @@
 		removeButton.$element.hide();
 		let filename = input.val();
 		if ( filename !== '' && typeof filename !== 'undefined' ) {
-			var imagePreviewURL = mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent(filename));
+			var imagePreviewURL =
+				mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent(filename)) + '?width=150';
 			imagePreviewURL += (imagePreviewURL.indexOf('?') === -1) ? '?' : '&';
 			imagePreviewURL += 'width=100';
 			inputSpan.prepend('<img alt="image preview" class="simpleupload_prv" src="' + imagePreviewURL + '">');
