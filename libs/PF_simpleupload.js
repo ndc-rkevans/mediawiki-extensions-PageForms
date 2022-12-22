@@ -14,20 +14,16 @@
 		removeButton.$element.hide();
 		let filename = input.val();
 		if ( filename !== '' && typeof filename !== 'undefined' ) {
-			var imagePreviewURL =
+			const imagePreviewURL =
 				mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent(filename)) + '?width=150';
-			imagePreviewURL += (imagePreviewURL.indexOf('?') === -1) ? '?' : '&';
-			imagePreviewURL += 'width=100';
 			inputSpan.prepend('<img alt="image preview" class="simpleupload_prv" src="' + imagePreviewURL + '">');
 			removeButton.$element.show();
 		}
 	}
 
 	$.fn.initializeSimpleUpload = function() {
-
-		var inputSpan = this.parent();
-
-		var uploadWidget = new OO.ui.SelectFileWidget( {
+		const inputSpan = this.parent();
+		const uploadWidget = new OO.ui.SelectFileWidget( {
 			buttonOnly: true,
 			button: {
 				flags: [
@@ -39,7 +35,7 @@
 			classes: [ 'simpleUpload' ]
 		} );
 
-		var removeButton = new OO.ui.ButtonWidget( {
+		const removeButton = new OO.ui.ButtonWidget( {
 			label: mw.message( 'htmlform-cloner-delete' ).text(),
 			flags: [
 				'destructive'
@@ -48,13 +44,13 @@
 			classes: [ 'simpleupload_rmv_btn' ]
 		} );
 
-		var input,
-			loadingImage = inputSpan.find('img.loading');
+		const loadingImage = inputSpan.find('img.loading');
 
 		// append a row of buttons for upload and remove
 		inputSpan.find('span.simpleUploadInterface').append(uploadWidget.$element);
 		inputSpan.find('span.simpleUploadInterface').append(removeButton.$element);
 
+		let input;
 		if ( inputSpan.attr('data-input-type') === 'combobox' ) {
 			input = inputSpan.find('input[role="combobox"]');
 			loadingImage.remove();
@@ -69,7 +65,7 @@
 
 		handleFilenameChanged(inputSpan, input, removeButton);
 
-		input.change( function(event) {
+		input.change( function() {
 			handleFilenameChanged(inputSpan, input, removeButton);
 		})
 
@@ -79,20 +75,17 @@
 			handleFilenameChanged(inputSpan, input, removeButton);
 		});
 
-		inputSpan.find('span.simpleUploadInterface').find('input[type="file"]').change( function(event) {
-			var fileToUpload = event.target.files[0]; // get (first) File
-			var fileName = event.target.files[0].name;
-
-			var formdata = new FormData(); // see https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
+		uploadWidget.on('change', function(files) {
+			const file = files[0];
+			const formdata = new FormData(); // see https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
 			formdata.append("action", "upload");
 			formdata.append("format", "json");
 			formdata.append("ignorewarnings", "true");
-			formdata.append("filename", fileName);
+			formdata.append("filename", file.name);
 			formdata.append("token", mw.user.tokens.get( 'csrfToken' ) );
-			formdata.append("file", fileToUpload);
+			formdata.append("file", file);
 
 			loadingImage.show();
-			// As we now have created the data to send, we send it...
 			$.ajax( { // http://stackoverflow.com/questions/6974684/how-to-send-formdata-objects-with-ajax-requests-in-jquery
 				url: mw.util.wikiScript( 'api' ), // url to api.php
 				contentType:false,
@@ -103,7 +96,7 @@
 					// do what you like, console logs are just for demonstration :-)
 					if ( !data.error ) {
 						// give the fileName to the field overwriting whatever was wrtitten there
-						input.val(fileName);
+						input.val(file.name);
 						handleFilenameChanged(inputSpan, input, removeButton);
 						loadingImage.hide();
 					} else {
