@@ -8,21 +8,69 @@
  */
 
 ( function( $, mw ) {
+	/**
+	 * Wrapper around an input field providing the gallery and the functionality to add a file after upload
+	 */
+	function inputFor($sibling) {
+		const $parent = $sibling.parent();
+		const $input = $parent.find('#' + $sibling.data('input-id'));
+		const isTokenInput = $input.hasClass('pfTokens');
 
-	function handleFilenameChanged(inputSpan, input, removeButton) {
-		inputSpan.find('img.simpleupload_prv').remove();
-		removeButton.$element.hide();
-		let filename = input.val();
-		if ( filename !== '' && typeof filename !== 'undefined' ) {
-			const imagePreviewURL =
-				mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent(filename)) + '?width=150';
-			inputSpan.prepend('<img alt="image preview" class="simpleupload_prv" src="' + imagePreviewURL + '">');
-			removeButton.$element.show();
-		}
+		const input = isTokenInput
+			? {
+				filenames: function(value) {
+					return value.map(s => s.trim());
+				},
+				addFile: function(filename) {
+					$input.append('<option value="' + filename + '">' + filename + '</option>');
+					$input.val([...getFilenames(), filename]);
+					(new pf.select2.tokens()).refresh($input);
+				}
+			}
+			: {
+				filenames: function(value) {
+					return [ value ];
+				},
+				addFile: function(filename) {
+					$input.val(filename);
+				}
+			};
+
+		const getFilenames = function() {
+			const value = $input.val();
+			return value ? input.filenames(value) : [];
+		};
+
+		const handleFilenamesChanged = function() {
+			$parent.find('div.simpleupload_prv').remove();
+			const filenames = getFilenames();
+			if ( filenames.length > 0 ) {
+				const $container = $('<div class="simpleupload_prv" />');
+				for (const filename of filenames) {
+					const thumbnailURL =
+						mw.config.get('wgArticlePath').replace('$1', 'Special:Redirect/file/' + encodeURIComponent(filename)) + '?width=150';
+					$('<img src="' + thumbnailURL + '">').appendTo($container);
+				}
+				$container.prependTo($parent);
+			}
+		};
+
+		const addFile = function(fileName) {
+			input.addFile(fileName);
+			handleFilenamesChanged();
+		};
+
+		handleFilenamesChanged();
+		// Register for change event
+		$input.change( function() {
+			// Have to wait when removing a file in the pfTokens case
+			setTimeout(() => handleFilenamesChanged(), 0);
+		});
+
+		return { addFile };
 	}
 
 	$.fn.initializeSimpleUpload = function() {
-		const inputSpan = this.parent();
 		const uploadWidget = new OO.ui.SelectFileWidget( {
 			buttonOnly: true,
 			button: {
@@ -35,46 +83,12 @@
 			classes: [ 'simpleUpload' ]
 		} );
 
-		const removeButton = new OO.ui.ButtonWidget( {
-			label: mw.message( 'htmlform-cloner-delete' ).text(),
-			flags: [
-				'destructive'
-			],
-			icon: 'trash',
-			classes: [ 'simpleupload_rmv_btn' ]
-		} );
-
+		const inputSpan = this.parent();
 		const loadingImage = inputSpan.find('img.loading');
-
 		// append a row of buttons for upload and remove
 		inputSpan.find('span.simpleUploadInterface').append(uploadWidget.$element);
-		inputSpan.find('span.simpleUploadInterface').append(removeButton.$element);
 
-		let input;
-		if ( inputSpan.attr('data-input-type') === 'combobox' ) {
-			input = inputSpan.find('input[role="combobox"]');
-			loadingImage.remove();
-			inputSpan.prepend(loadingImage);
-		} else {
-			input = inputSpan.find('input.createboxInput');
-		}
-
-		if ( inputSpan.attr('data-input-type') === 'text' ) {
-			input.hide();
-		}
-
-		handleFilenameChanged(inputSpan, input, removeButton);
-
-		input.change( function() {
-			handleFilenameChanged(inputSpan, input, removeButton);
-		})
-
-		removeButton.$element.find('a').click( function () {
-			inputSpan.find('img.simpleupload_prv').remove();
-			input.val('');
-			handleFilenameChanged(inputSpan, input, removeButton);
-		});
-
+		const input = inputFor(this);
 		uploadWidget.on('change', function(files) {
 			const file = files[0];
 			const formdata = new FormData(); // see https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
@@ -93,22 +107,16 @@
 				type:'POST',
 				data: formdata,// the formdata object we created above
 				success: function( data ) {
-					// do what you like, console logs are just for demonstration :-)
-					if ( !data.error ) {
-						// give the fileName to the field overwriting whatever was wrtitten there
-						input.val(file.name);
-						handleFilenameChanged(inputSpan, input, removeButton);
-						loadingImage.hide();
+					if ( data.upload ) {
+						input.addFile(data.upload.filename);
 					} else {
-						window.alert("Error: " + data.error.info);
-						// if any error pops up, just hide the remove button
-						removeButton.$element.hide();
-						loadingImage.hide();
+						error = data.error?.info || mw.msg( 'pf-simpleupload-unspecified-upload-error' );
+						window.alert("Error: " + error);
 					}
+					loadingImage.hide();
 				},
 				error: function( xhr,status, error ) {
-					window.alert('Something went wrong! Please check the log for errors');
-					removeButton.$element.hide();
+					window.alert(mw.msg( 'pf-simpleupload-unspecified-upload-error' ));
 					loadingImage.hide();
 					mw.log(error);
 				}
