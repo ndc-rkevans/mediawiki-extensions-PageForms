@@ -10,6 +10,9 @@
 ( function( $, mw ) {
 	/**
 	 * Wrapper around an input field providing the gallery and the functionality to add a file after upload
+	 *
+	 * @param $sibling
+	 * @return {{addFile: addFile}}
 	 */
 	function inputFor($sibling) {
 		const $parent = $sibling.parent();
@@ -23,7 +26,7 @@
 				},
 				addFile: function(filename) {
 					$input.append('<option value="' + filename + '">' + filename + '</option>');
-					$input.val([...getFilenames(), filename]);
+					$input.val([ ...getFilenames(), filename ]);
 					(new pf.select2.tokens()).refresh($input);
 				}
 			}
@@ -110,7 +113,7 @@
 					if ( data.upload ) {
 						input.addFile(data.upload.filename);
 					} else {
-						error = data.error?.info || mw.msg( 'pf-simpleupload-unspecified-upload-error' );
+						const error = (data.error && data.error.info) || mw.msg( 'pf-simpleupload-unspecified-upload-error' );
 						window.alert("Error: " + error);
 					}
 					loadingImage.hide();

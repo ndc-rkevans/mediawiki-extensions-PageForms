@@ -128,7 +128,7 @@ pf.SpreadsheetComboBoxInput.prototype.setValues = function() {
 /**
  *
  * @param {string} suggestion
- * @returns HtmlSnippet
+ * @return HtmlSnippet
  */
 pf.SpreadsheetComboBoxInput.prototype.highlightText = function ( suggestion ) {
 	var searchTerm = this.getValue();
@@ -153,7 +153,7 @@ pf.SpreadsheetComboBoxInput.prototype.highlightText = function ( suggestion ) {
 /**
  * Provides an option with "No Matches" label
  *
- * @returns {object}
+ * @return {Object}
  */
 pf.SpreadsheetComboBoxInput.prototype.getNoMatchesOption = function() {
 	return {
@@ -167,7 +167,7 @@ pf.SpreadsheetComboBoxInput.prototype.getNoMatchesOption = function() {
  *
  * @param {string} string
  * @param {string} curValue
- * @returns {boolean}
+ * @return {boolean}
  */
 pf.SpreadsheetComboBoxInput.prototype.checkIfAnyWordStartsWithInputValue = function( string, curValue ) {
 	var regex = new RegExp('\\b' + curValue.toLowerCase());
@@ -178,7 +178,7 @@ pf.SpreadsheetComboBoxInput.prototype.checkIfAnyWordStartsWithInputValue = funct
  *
  * @param {string} string
  * @param {string} curValue
- * @returns {boolean}
+ * @return {boolean}
  */
 pf.SpreadsheetComboBoxInput.prototype.getConditionForAutocompleteOnAllChars = function(string, curValue) {
 	return string.toLowerCase().includes(curValue.toLowerCase())
@@ -189,7 +189,7 @@ pf.SpreadsheetComboBoxInput.prototype.getConditionForAutocompleteOnAllChars = fu
  *
  * @param {integer} data_y
  * @param {string} dep_on_field
- * @returns {object} dep_field_opts
+ * @return {Object} dep_field_opts
  */
 pf.SpreadsheetComboBoxInput.prototype.getDependentFieldOpts = function( data_y, dep_on_field ) {
 	var dep_field_opts = {};

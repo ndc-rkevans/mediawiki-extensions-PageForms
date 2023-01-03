@@ -316,5 +316,6 @@
 	"pf-invalidexturl": "Error message.",
 	"pf-blankexturl": "Error message.",
 	"pf-externalpageempty": "Error message.",
-	"pf-externalpagebadjson": "Error message."
+	"pf-externalpagebadjson": "Error message.",
+	"pf-simpleupload-unspecified-upload-error": "The file could not be uploaded! (Maybe it is too large?) Please check the log for errors."
 }
