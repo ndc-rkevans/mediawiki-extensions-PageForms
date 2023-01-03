@@ -90,6 +90,8 @@
 				for ( let i = 1; i < newTokensOrder.length; i++ ){
 					dropdownItems[newTokensOrder[i]].insertAfter(dropdownItems[newTokensOrder[i - 1]]);
 				}
+				// This one is not triggered automatically
+				tokensSelect.trigger("change");
 			}
 		});
 
