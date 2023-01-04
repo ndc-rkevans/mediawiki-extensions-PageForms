@@ -25,6 +25,17 @@ function createDom() {
 	const { TextEncoder, TextDecoder } = require('util');
 	global.TextEncoder = TextEncoder;
 	global.TextDecoder = TextDecoder;
+	global.FormData = function() {
+		const data = Object.create(null);
+		return {
+			append: function(key, value) {
+				data[key] = value;
+			},
+			get: function(key) {
+				return data[key];
+			}
+		}
+	};
 
 	const { JSDOM } = require('jsdom');
 	const dom = new JSDOM();
@@ -33,6 +44,7 @@ function createDom() {
 	global.Node = window.Node;
 	global.scroll = () => {};
 	global.$ = global.jQuery = require('../../../../resources/lib/jquery/jquery.js');
+
 
 	return () => {
 		global.document.body.innerHTML = '';
@@ -67,6 +79,12 @@ function prepareMediaWiki() {
 			fire: () => {
 			}
 		});
+		mw.user = {
+			tokens: {
+				get: () => ""
+			}
+		};
+		mw.util = {};
 	}
 
 	resetMediaWiki();

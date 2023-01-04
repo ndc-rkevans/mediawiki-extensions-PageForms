@@ -1,6 +1,6 @@
 require('../../libs/PageForms.js');
 
-QUnit.module('validation', {
+QUnit.module('window.validateAll', {
 	beforeEach: assert => {
 		mw.msg = (msg, val) => msg === 'pf_blank_error' ? 'the error message' : null;
 		mw.config = { get: key => key === 'wgPageFormsScriptPath' ? 'path' : null }

@@ -7,12 +7,12 @@
  * @author Yash Varshney
  */
 
-( function( $, mw ) {
+( function( $, mw) {
 	/**
 	 * Wrapper around an input field providing the gallery and the functionality to add a file after upload
 	 *
-	 * @param $sibling
-	 * @return {{addFile: addFile}}
+	 * @param {jQuery} $sibling
+	 * @return {{addFile: Function}}
 	 */
 	function inputFor($sibling) {
 		const $parent = $sibling.parent();
@@ -94,6 +94,7 @@
 		const input = inputFor(this);
 		uploadWidget.on('change', function(files) {
 			const file = files[0];
+
 			const formdata = new FormData(); // see https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
 			formdata.append("action", "upload");
 			formdata.append("format", "json");
@@ -108,7 +109,7 @@
 				contentType:false,
 				processData:false,
 				type:'POST',
-				data: formdata,// the formdata object we created above
+				data: formdata,
 				success: function( data ) {
 					if ( data.upload ) {
 						input.addFile(data.upload.filename);
