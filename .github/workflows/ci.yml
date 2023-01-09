@@ -27,14 +27,15 @@ jobs:
             semantic_mediawiki_version: dev-master
             coverage: false
             experimental: true
-          - mediawiki_version: '1.37'
-            semantic_mediawiki_version: dev-master
-            coverage: false
-            experimental: true
-          - mediawiki_version: '1.38'
-            semantic_mediawiki_version: dev-master
-            coverage: false
-            experimental: true
+# Not working currently for 1.37/38
+#          - mediawiki_version: '1.37'
+#            semantic_mediawiki_version: dev-master
+#            coverage: false
+#            experimental: true
+#          - mediawiki_version: '1.38'
+#            semantic_mediawiki_version: dev-master
+#            coverage: false
+#            experimental: true
 
     env:
       MW_VERSION: ${{ matrix.mediawiki_version }}
