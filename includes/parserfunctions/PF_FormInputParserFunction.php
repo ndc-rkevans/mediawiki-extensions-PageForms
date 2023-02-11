@@ -107,7 +107,6 @@ class PFFormInputParserFunction {
 			} elseif ( $paramName == 'no autofocus' ) {
 				$inAutofocus = false;
 			} else {
-				$value = urlencode( $value );
 				parse_str( "$paramName=$value", $arr );
 				$inQueryArr = PFUtils::arrayMergeRecursiveDistinct( $inQueryArr, $arr );
 				if ( $paramName == 'returnto' ) {
