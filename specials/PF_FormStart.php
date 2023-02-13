@@ -188,7 +188,7 @@ END;
 					// string snippet out of the whole
 					// thing.
 					$wrapperArray = [ $key => $val ];
-					$redirect_url .= urldecode( http_build_query( $wrapperArray ) );
+					$redirect_url .= http_build_query( $wrapperArray );
 				} elseif ( $key == 'preload' || $key == 'returnto' ) {
 					$redirect_url .= ( strpos( $redirect_url, '?' ) > -1 ) ? '&' : '?';
 					$redirect_url .= "$key=$val";
