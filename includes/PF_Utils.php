@@ -476,25 +476,21 @@ END;
 	}
 
 	public static function isCapitalized( $index ) {
-		if ( class_exists( NamespaceInfo::class ) ) {
-			// MW 1.34+
-			return MediaWikiServices::getInstance()
-				->getNamespaceInfo()
-				->isCapitalized( $index );
-		} else {
-			return MWNamespace::isCapitalized( $index );
-		}
+		return MediaWikiServices::getInstance()
+			->getNamespaceInfo()
+			->isCapitalized( $index );
 	}
 
 	public static function getCanonicalName( $index ) {
-		if ( class_exists( NamespaceInfo::class ) ) {
-			// MW 1.34+
-			return MediaWikiServices::getInstance()
-				->getNamespaceInfo()
-				->getCanonicalName( $index );
-		} else {
-			return MWNamespace::getCanonicalIndex( $index );
-		}
+		return MediaWikiServices::getInstance()
+			->getNamespaceInfo()
+			->getCanonicalName( $index );
+	}
+
+	public static function getNsText( $index ) {
+		return MediaWikiServices::getInstance()
+			->getContentLanguage()
+			->getNsText( $index ) ?: '';
 	}
 
 	public static function isTranslateEnabled() {
