@@ -81,10 +81,15 @@ span.mandatoryFieldsSpan {
 	margin-bottom: 0;
 }
 
-#pfForm img.simpleupload_prv {
+#pfForm div.simpleupload_prv {
 	margin-bottom: 10px;
-	display: block;
 }
+
+#pfForm div.simpleupload_prv > img {
+	max-width: 350px;
+	max-height: 150px;
+}
+
 /* === Simple Upload === */
 
 #pfForm .createboxInput,
