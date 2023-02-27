@@ -107,18 +107,7 @@ class PFFormLink {
 			} elseif ( $param_name == null && $value == 'create page' ) {
 				$inCreatePage = true;
 			} elseif ( $param_name !== null ) {
-				if ( strpos( $value, ":" ) !== false ) {
-					$parts = explode( ":", $value );
-					$parts[0] = str_replace( " ", "_", $parts[0] );
-					$value = implode( ":", $parts );
-				}
-				$value = html_entity_decode($value);
-				$value = urlencode( $value );
-				parse_str( "$param_name=$value", $arr );
-				$inQueryArr = PFUtils::arrayMergeRecursiveDistinct( $inQueryArr, $arr );
-				if ( $param_name == 'returnto' ) {
-					$hasReturnTo = true;
-				}
+				PFParserFunctionHelpers::handleFreeParameter($param_name, $value, $inQueryArr, $hasReturnTo);
 			}
 		}
 

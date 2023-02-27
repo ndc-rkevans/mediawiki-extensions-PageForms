@@ -110,6 +110,7 @@
 		"PFHooks": "includes/PF_Hooks.php",
 		"PFFormLinker": "includes/PF_FormLinker.php",
 		"PFPageSchemas": "includes/PF_PageSchemas.php",
+		"PFParserFunctionHelpers": "includes/parserfunctions/PF_ParserFunctionHelpers.php",
 		"PFArrayMap": "includes/parserfunctions/PF_ArrayMap.php",
 		"PFArrayMapTemplate": "includes/parserfunctions/PF_ArrayMapTemplate.php",
 		"PFAutoEdit": "includes/parserfunctions/PF_AutoEdit.php",

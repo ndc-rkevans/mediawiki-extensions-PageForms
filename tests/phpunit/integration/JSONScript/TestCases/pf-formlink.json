@@ -1,0 +1,80 @@
+{
+	"description": "formlink parser function",
+	"setup": [
+		{
+			"page": "plain formlink",
+			"contents": "{{#formlink:form=FORM|link text=LINK TEXT|parameter=1 & 2 + 3}}"
+		},
+		{
+			"page": "plain formlink of type button",
+			"contents": "{{#formlink:link type=button|form=FORM|link text=LINK TEXT|parameter=1 & 2 + 3}}"
+		},
+		{
+			"page": "formlink with parameter using value template",
+			"contents": "{{#formlink:form=FORM|link text=LINK TEXT|parameter={{Value}}}}"
+		},
+		{
+			"namespace": "TEST_NAMESPACE",
+			"page": "1 & 2 + 3",
+			"contents": "{{#formlink:form=FORM|link text=LINK TEXT|parameter={{FULLPAGENAME}}}}"
+		},
+		{
+			"namespace": "TEST_NAMESPACE",
+			"page": "1 & 2 + 3 button",
+			"contents": "{{#formlink:link type=button|form=FORM|link text=LINK TEXT|parameter={{FULLPAGENAME}}}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "plain formlink",
+			"subject": "plain formlink",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Special:FormEdit/FORM?parameter=1%20%26%202%20%2B%203\" title=\"\" target=\"_self\">LINK TEXT</a>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "plain formlink of type button",
+			"subject": "plain formlink of type button",
+			"assert-output": {
+				"to-contain": [
+					"<form action=\"/index.php/Special:FormEdit/FORM\" method=\"get\" target=\"_self\">",
+					"<span class=\"oo-ui-labelElement-label\">LINK TEXT</span>",
+					"<input type=\"hidden\" value=\"1 &amp; 2 + 3\" name=\"parameter\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "formlink using FULLPAGENAME as value has underscore in namespace instead of space",
+			"subject": "Test_Namespace:1 & 2 + 3",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Special:FormEdit/FORM?parameter=Test_Namespace%3A1%20%26%202%20%2B%203\" title=\"\" target=\"_self\">LINK TEXT</a>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "formlink of type button using FULLPAGENAME as value has underscore in namespace instead of space",
+			"subject": "Test_Namespace:1 & 2 + 3 button",
+			"assert-output": {
+				"to-contain": [
+					"<form action=\"/index.php/Special:FormEdit/FORM\" method=\"get\" target=\"_self\">",
+					"<span class=\"oo-ui-labelElement-label\">LINK TEXT</span>",
+					"<input type=\"hidden\" value=\"Test_Namespace:1 &amp; 2 + 3 button\" name=\"parameter\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

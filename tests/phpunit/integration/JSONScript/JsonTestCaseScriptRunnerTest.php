@@ -5,6 +5,10 @@ namespace PF\Tests\Integration\JSONScript;
 use ExtensionRegistry;
 use SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest;
 
+// Putting the following in JsonTestCaseScriptRunnerTest::setUpBeforeClass didn't work:
+define( "TEST_NAMESPACE", 3000 );
+$wgExtraNamespaces[TEST_NAMESPACE] = "Test_Namespace";
+
 /**
  * @group PF
  * @group SMWExtension
@@ -34,5 +38,4 @@ class JsonTestCaseScriptRunnerTest extends JSONScriptTestCaseRunnerTest {
 			}
 		];
 	}
-
 }
