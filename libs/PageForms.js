@@ -1754,13 +1754,10 @@ $(document).ready( function() {
 
 		$( 'body' ).initializeJSElements(false);
 
-		// handle "create" case with no instances added yet
-		if($('.multipleTemplateInstance').length > 0) {
-			$('.multipleTemplateInstance').each( function() {
-				$(this).initializeJSElements(true);
-			});
-		}
-		
+		$('.multipleTemplateInstance').each( function() {
+			$(this).initializeJSElements(true);
+		});
+
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
 		});
