@@ -5,7 +5,7 @@
  *
  * @class
  * @extends OO.ui.ComboBoxInputWidget
- * @mixin OO.ui.mixin.PendingElement;
+ * @mixin OO.ui.mixin.PendingElement
  *
  * @license GNU GPL v2+
  * @author Jatin Mehta
@@ -29,11 +29,12 @@
         this.setInputAttribute('name', element.attr('name'));
         this.setInputAttribute('origname', element.attr('origname'));
         this.setInputId(element.attr('id'));
-        this.setValue(element.val())
+        this.setValue(element.val());
+        this.appendToInputAttribute('class', element.attr('class'));
         this.config['autocompletesettings'] = element.attr('autocompletesettings');
         this.config['autocompletedatatype'] = element.attr('autocompletedatatype');
         this.config['existingvaluesonly'] = element.attr('existingvaluesonly');
-        this.setInputAttribute('autocompletesettings', this.config['autocompletesettings']);;
+        this.setInputAttribute('autocompletesettings', this.config['autocompletesettings']);
         this.setInputAttribute('placeholder', element.attr('placeholder'));
         this.setInputAttribute('tabIndex', element.attr('tabindex'));
         // Initialize values in the combobox
@@ -413,5 +414,9 @@
 
     pf.ComboBoxInput.prototype.setInputAttribute = function (attr, value) {
         this.$input.attr(attr, value);
+    };
+
+    pf.ComboBoxInput.prototype.appendToInputAttribute = function (attr, value) {
+        this.$input.attr(attr, this.$input.attr(attr) + ' ' + value);
     };
 }(jQuery, mediaWiki, pageforms));
