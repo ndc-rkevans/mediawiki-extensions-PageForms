@@ -20,6 +20,7 @@ class PFFormField {
 	 * @var PFTemplateField
 	 */
 	public $template_field;
+	private $mAutocapitalize;
 	private $mInputType;
 	private $mIsMandatory;
 	private $mIsHidden;
@@ -81,6 +82,14 @@ class PFFormField {
 	 */
 	public function setTemplateField( $templateField ) {
 		$this->template_field = $templateField;
+	}
+
+	public function getAutocapitalize() {
+		return $this->mAutocapitalize;
+	}
+
+	public function setAutocapitalize( $autocapitalize ) {
+		$this->mAutocapitalize = $autocapitalize;
 	}
 
 	public function getInputType() {
@@ -263,7 +272,9 @@ class PFFormField {
 				$f->mFieldArgs[$sub_components[0]] = $sub_components[1];
 
 				// Then, do all special handling.
-				if ( $sub_components[0] == 'input type' ) {
+				if ( $sub_components[0] == 'autocapitalize' ) {
+					$f->mAutocapitalize = strtolower( $sub_components[1] );
+				} elseif ( $sub_components[0] == 'input type' ) {
 					$f->mInputType = $sub_components[1];
 				} elseif ( $sub_components[0] == 'default' ) {
 					// We call recursivePreprocess() here,
@@ -550,6 +561,14 @@ class PFFormField {
 		}
 	}
 
+	function autocapitalize( $val ) {
+		if ( $this->mAutocapitalize === 'words') {
+			return ucwords( $val );
+		} else {
+			return $val;
+		}
+	}
+
 	function getCurrentValue( $template_instance_query_values, $form_submitted, $source_is_page, $all_instances_printed, &$val_modifier = null ) {
 		// Get the value from the request, if
 		// it's there, and if it's not an array.
@@ -611,7 +630,7 @@ class PFFormField {
 					$cur_values = [];
 					if ( $map_field && $this->mPossibleValues !== null ) {
 						foreach ( $field_query_val as $key => $val ) {
-							$val = trim( $val );
+							$val = $this->autocapitalize( trim( $val ) );
 							if ( $key === 'is_list' ) {
 								$cur_values[$key] = $val;
 							} else {
@@ -620,12 +639,12 @@ class PFFormField {
 						}
 					} else {
 						foreach ( $field_query_val as $key => $val ) {
-							$cur_values[$key] = $val;
+							$cur_values[$key] = $this->autocapitalize( $val );
 						}
 					}
 					return PFFormPrinter::getStringFromPassedInArray( $cur_values, $delimiter );
 				} else {
-					$field_query_val = trim( $field_query_val );
+					$field_query_val = $this->autocapitalize( trim( $field_query_val ) );
 					if ( $map_field && $this->mPossibleValues !== null ) {
 						// this should be replaced with an input type neutral way of
 						// figuring out if this scalar input type is a list
