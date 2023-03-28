@@ -84,14 +84,6 @@ class PFFormField {
 		$this->template_field = $templateField;
 	}
 
-	public function getAutocapitalize() {
-		return $this->mAutocapitalize;
-	}
-
-	public function setAutocapitalize( $autocapitalize ) {
-		$this->mAutocapitalize = $autocapitalize;
-	}
-
 	public function getInputType() {
 		return $this->mInputType;
 	}
