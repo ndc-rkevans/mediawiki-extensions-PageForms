@@ -197,15 +197,14 @@
 
 	mw.pageFormsActualizeVisualEditorFields = function( callback ) {
 		var visualEditors = $.fn.getVEInstances();
-		if( visualEditors.length > 0 ) {
-			var savingQueue = [];
-			$(visualEditors).each( function( i, ve ) {
-				savingQueue.push( ve.target.updateContent() );
-			});
-			$.when.apply( $, savingQueue ).then( function () {
-				callback();
-			});
-		}
+		var savingQueue = [];
+
+		$(visualEditors).each( function( i, ve ) {
+			savingQueue.push( ve.target.updateContent() );
+		});
+		$.when.apply( $, savingQueue ).then( function () {
+			callback();
+		});
 	};
 
 	if ( mw.config.get( 'wgAction' ) === 'formedit' || mw.config.get( 'wgCanonicalSpecialPageName' ) === 'FormEdit' ) {
@@ -240,8 +239,11 @@
 								if ( !canSubmit ) {
 									event.preventDefault();
 									mw.pageFormsActualizeVisualEditorFields( function () {
-										canSubmit = true;
-										$( button ).find("[type='submit']").click();
+										// canSubmit only if validate fields passed (e.g. mandatory check)
+										if(validateAll()) {
+											canSubmit = true;
+											$( button ).find("[type='submit']").click();
+										}
 									} );
 								}
 							} );
