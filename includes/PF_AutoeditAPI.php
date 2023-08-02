@@ -1153,6 +1153,7 @@ class PFAutoeditAPI extends ApiBase {
 	 * @return array
 	 */
 	private function parseDataFromQueryString( &$data, $queryString ) {
+		$queryString = str_replace( '+', '%2B', $queryString );
 		$params = explode( '&', $queryString );
 
 		foreach ( $params as $param ) {
