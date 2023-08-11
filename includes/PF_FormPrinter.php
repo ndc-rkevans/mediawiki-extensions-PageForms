@@ -1170,7 +1170,7 @@ END;
 							}
 						}
 						// Convert modified array back to a comma-separated string value and modify
-						$cur_value = implode( ",", $val_array );
+						$cur_value = implode( $delimiter, $val_array );
 						if ( $cur_value === '' ) {
 							// HACK: setting an empty string prevents anything from happening at all.
 							// set a dummy string that evaluates to an empty string
