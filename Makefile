@@ -45,10 +45,10 @@ show-current-target = @echo; echo "======= $@ ========"
 # ======== Global Targets ========
 
 .PHONY: ci
-ci: install composer-test
+ci: install composer-test npm-test
 
 .PHONY: ci-coverage
-ci-coverage: install composer-test-coverage
+ci-coverage: install composer-test-coverage npm-test-coverage
 
 .PHONY: install
 install: destroy up .install
@@ -63,7 +63,7 @@ down: .init .down
 destroy: .init .destroy
 
 .PHONY: bash
-bash: up .bash
+bash: .bash
 
 # ======== General Docker-Compose Helper Targets ========
 
@@ -113,6 +113,14 @@ composer-test:
 composer-test-coverage:
 	$(show-current-target)
 	$(compose-exec-wiki) bash -c "cd $(EXTENSION_FOLDER) && composer phpunit-coverage" 
+
+.PHONY: npm-test
+npm-test:
+	$(compose-exec-wiki) bash -c "cd $(EXTENSION_FOLDER) && npm run test" 
+
+.PHONY: npm-test-coverage
+npm-test-coverage:
+	$(compose-exec-wiki) bash -c "cd $(EXTENSION_FOLDER) && npm run test-coverage" 
 
 # ======== Dev Targets ========
 

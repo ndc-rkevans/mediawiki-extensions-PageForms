@@ -20,7 +20,7 @@ RUN chown -R www-data:www-data /var/www/html/extensions/SemanticMediaWiki/
 ENV EXTENSION=PageForms
 COPY composer*.json package*.json /var/www/html/extensions/$EXTENSION/
 
-RUN cd extensions/$EXTENSION && composer update
+RUN cd extensions/$EXTENSION && composer update && npm install
 
 COPY . /var/www/html/extensions/$EXTENSION
 
