@@ -1,26 +1,31 @@
-ARG MW_VERSION=1.35
-FROM gesinn/docker-mediawiki-sqlite:${MW_VERSION}
+ARG MW_VERSION
+ARG PHP_VERSION
+FROM gesinn/mediawiki-ci:${MW_VERSION}-php${PHP_VERSION}
 
-ARG SMW_VERSION=4.0.1
-RUN COMPOSER=composer.local.json composer require --no-update mediawiki/semantic-media-wiki ${SMW_VERSION} && \
-    curl -L https://github.com/wikimedia/mediawiki-extensions-DisplayTitle/tarball/3.1 | tar xz --strip-components 1 --one-top-level=extensions/DisplayTitle && \
-    sudo -u www-data composer update && \
-    php maintenance/update.php --skip-external-dependencies --quick
+ARG MW_VERSION
+ARG SMW_VERSION
+ARG PHP_VERSION
+ARG DT_VERSION
+
+# get needed dependencies for this extension
+RUN sed -i s/80/8080/g /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
+RUN COMPOSER=composer.local.json composer require --no-update mediawiki/semantic-media-wiki ${SMW_VERSION}
+RUN COMPOSER=composer.local.json composer require --no-update mediawiki/display-title ${DT_VERSION}
+RUN composer update 
+
+
+RUN chown -R www-data:www-data /var/www/html/extensions/SemanticMediaWiki/
 
 ENV EXTENSION=PageForms
 COPY composer*.json package*.json /var/www/html/extensions/$EXTENSION/
 
-RUN cd extensions/$EXTENSION && \
-    npm ci && \
-    composer update
+RUN cd extensions/$EXTENSION && composer update
 
 COPY . /var/www/html/extensions/$EXTENSION
 
-RUN sed -i s/80/8080/g /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && \
-    echo \
-        'wfLoadExtension( "SemanticMediaWiki" );\n' \
-        'enableSemantics( $wgServer );\n' \
-        'wfLoadExtension( "DisplayTitle" );\n' \
+RUN echo \
+        "wfLoadExtension( 'SemanticMediaWiki' );\n" \
+        "enableSemantics( 'localhost' );\n" \
         "wfLoadExtension( '$EXTENSION' );\n" \
-    >> LocalSettings.php && \
-	php maintenance/update.php --quick
+    >> __setup_extension__
