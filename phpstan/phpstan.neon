@@ -1,0 +1,26 @@
+includes:
+	- baseline.neon
+
+parameters:
+	level: 1
+	paths:
+		- ../includes
+		- ../specials
+		- ../languages
+		- ../tests/phpunit
+	scanFiles:
+		- ../languages/PF_Namespaces.php
+		- ../../PageSchemas/includes/PSExtensionHandler.php
+		- ../../PageSchemas/includes/PageSchemas.php
+		- ../../PageSchemas/includes/PSTemplateField.php
+		- ../../PageSchemas/includes/PSCreatePageJob.php
+	scanDirectories:
+		- ../../SemanticMediaWiki/includes
+		- ../../SemanticMediaWiki/src
+		- ../../SemanticMediaWiki/tests
+		- ../../../includes
+		- ../../../tests/phpunit
+		- ../../../vendor/phpunit
+		- ../../../vendor/oojs
+	bootstrapFiles:
+		- bootstrap.php
