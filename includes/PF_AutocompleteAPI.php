@@ -41,10 +41,8 @@ class PFAutocompleteAPI extends ApiBase {
 
 		global $wgPageFormsUseDisplayTitle;
 		$map = false;
-		if ( $baseprop !== null ) {
-			if ( $property !== null ) {
-				$data = $this->getAllValuesForProperty( $property, null, $baseprop, $basevalue );
-			}
+		if ( $baseprop !== null && $property !== null ) {
+			$data = $this->getAllValuesForProperty( $property, null, $baseprop, $basevalue );
 		} elseif ( $property !== null ) {
 			$data = $this->getAllValuesForProperty( $property, $substr );
 		} elseif ( $category !== null ) {

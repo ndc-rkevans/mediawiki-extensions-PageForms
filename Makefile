@@ -1,7 +1,7 @@
 EXTENSION := PageForms
 
 MW_VERSION ?= 1.35
-SMW_VERSION ?= 4.0.1
+SMW_VERSION ?= 4.1.2
 
 EXTENSION_FOLDER := /var/www/html/extensions/$(EXTENSION)
 IMAGE_NAME := $(shell echo $(EXTENSION) | tr A-Z a-z}):test-$(MW_VERSION)-$(SMW_VERSION)
