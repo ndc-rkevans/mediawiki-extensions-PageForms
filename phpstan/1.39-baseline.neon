@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Variable \\$data might not be defined\\.$#"
-			count: 1
-			path: ../includes/PF_AutocompleteAPI.php
-
-		-
 			message: "#^Variable \\$formHTML might not be defined\\.$#"
 			count: 2
 			path: ../includes/PF_AutoeditAPI.php
@@ -31,16 +26,6 @@ parameters:
 			path: ../includes/PF_CreatePageJob.php
 
 		-
-			message: "#^Undefined variable\\: \\$page_value$#"
-			count: 5
-			path: ../includes/PF_FormPrinter.php
-
-		-
-			message: "#^Variable \\$other_args might not be defined\\.$#"
-			count: 1
-			path: ../includes/PF_FormPrinter.php
-
-		-
 			message: "#^Variable \\$form_title might not be defined\\.$#"
 			count: 1
 			path: ../includes/PF_FormUtils.php
@@ -49,11 +34,6 @@ parameters:
 			message: "#^Parameter \\$resourceLoader of method PFHooks\\:\\:registerModules\\(\\) has invalid type ResourceLoader\\.$#"
 			count: 1
 			path: ../includes/PF_Hooks.php
-
-		-
-			message: "#^Class PSTemplate not found\\.$#"
-			count: 1
-			path: ../includes/PF_PageSchemas.php
 
 		-
 			message: "#^Variable \\$propName might not be defined\\.$#"

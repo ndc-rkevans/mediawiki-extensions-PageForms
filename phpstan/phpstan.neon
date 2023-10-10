@@ -12,6 +12,7 @@ parameters:
 		- ../languages/PF_Namespaces.php
 		- ../../PageSchemas/includes/PSExtensionHandler.php
 		- ../../PageSchemas/includes/PageSchemas.php
+		- ../../PageSchemas/includes/PSTemplate.php
 		- ../../PageSchemas/includes/PSTemplateField.php
 		- ../../PageSchemas/includes/PSCreatePageJob.php
 	scanDirectories:
