@@ -52,13 +52,14 @@
 			"@phpunit-coverage"
 		],
 		"analyze": [
-			"@lint"
+			"@lint",
+			"@phpstan"
 		],
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
 		"phpcs": "phpcs -p -s includes tests/phpunit",
 		"phpcs-fix": "phpcbf src tests/phpunit",
-		"phpstan": "phpstan analyse --configuration=phpstan.neon --memory-limit=2G",
-		"phpstan-baseline": "phpstan analyse --configuration=phpstan.neon --memory-limit=2G --generate-baseline",
+		"phpstan": "test -e phpstan/${MEDIAWIKI_MAJOR_VERSION}-phpstan.neon && phpstan analyse --configuration=phpstan/${MEDIAWIKI_MAJOR_VERSION}-phpstan.neon --memory-limit=2G || echo 'Skipping PHPStan (no configuration)'",
+		"phpstan-baseline": "phpstan analyse --configuration=phpstan/${MEDIAWIKI_MAJOR_VERSION}-phpstan.neon --memory-limit=2G --generate-baseline phpstan/${MEDIAWIKI_MAJOR_VERSION}-baseline.neon",
 		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox",
 		"phpunit-coverage": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
 		"minus-x": "minus-x check .",

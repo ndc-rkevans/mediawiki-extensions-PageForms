@@ -6,14 +6,15 @@ ARG MW_VERSION
 ARG SMW_VERSION
 ARG PHP_VERSION
 ARG DT_VERSION
+ARG PS_VERSION
 
 # get needed dependencies for this extension
 RUN sed -i s/80/8080/g /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
 
 RUN COMPOSER=composer.local.json composer require --no-update mediawiki/semantic-media-wiki ${SMW_VERSION}
-RUN COMPOSER=composer.local.json composer require --no-update mediawiki/display-title ${DT_VERSION}
+RUN curl -L https://github.com/wikimedia/mediawiki-extensions-DisplayTitle/tarball/${DT_VERSION} | tar xz --strip-components 1 --one-top-level=extensions/DisplayTitle
+RUN curl -L https://github.com/wikimedia/mediawiki-extensions-PageSchemas/tarball/${PS_VERSION} | tar xz --strip-components 1 --one-top-level=extensions/PageSchemas
 RUN composer update 
-
 
 RUN chown -R www-data:www-data /var/www/html/extensions/SemanticMediaWiki/
 
@@ -25,7 +26,9 @@ RUN cd extensions/$EXTENSION && composer update && npm install
 COPY . /var/www/html/extensions/$EXTENSION
 
 RUN echo \
-        "wfLoadExtension( 'SemanticMediaWiki' );\n" \
-        "enableSemantics( 'localhost' );\n" \
+        'wfLoadExtension( "SemanticMediaWiki" );\n' \
+        'enableSemantics( $wgServer );\n' \
+        'wfLoadExtension( "PageSchemas" );\n' \
+        'wfLoadExtension( "DisplayTitle" );\n' \
         "wfLoadExtension( '$EXTENSION' );\n" \
     >> __setup_extension__

@@ -7,6 +7,7 @@ services:
         SMW_VERSION: ${SMW_VERSION}
         PHP_VERSION: ${PHP_VERSION}
         DT_VERSION: ${DT_VERSION}
+        PS_VERSION: ${PS_VERSION}
     image: ${IMAGE_NAME}
     
   mysql:
