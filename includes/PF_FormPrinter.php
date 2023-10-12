@@ -1144,39 +1144,39 @@ END;
 
 					if ( $val_modifier !== null ) {
 						$page_value = $tif->getValuesFromPage()[$field_name];
-					}
-					if ( $val_modifier === '+' ) {
-						if ( preg_match( "#(,|\^)\s*$cur_value\s*(,|\$)#", $page_value ) === 0 ) {
-							if ( trim( $page_value ) !== '' ) {
-								// if page_value is empty, simply don't do anything, because then cur_value
-								// is already the value it has to be (no delimiter needed).
-								$cur_value = $page_value . $delimiter . $cur_value;
+						if ( $val_modifier === '+' ) {
+							if ( preg_match( "#(,|\^)\s*$cur_value\s*(,|\$)#", $page_value ) === 0 ) {
+								if ( trim( $page_value ) !== '' ) {
+									// if page_value is empty, simply don't do anything, because then cur_value
+									// is already the value it has to be (no delimiter needed).
+									$cur_value = $page_value . $delimiter . $cur_value;
+								}
+							} else {
+								$cur_value = $page_value;
 							}
-						} else {
-							$cur_value = $page_value;
-						}
-						$tif->changeFieldValues( $field_name, $cur_value, $delimiter );
-					} elseif ( $val_modifier === '-' ) {
-						// get an array of elements to remove:
-						$remove = array_map( 'trim', explode( ",", $cur_value ) );
-						// process the current value:
-						$val_array = array_map( 'trim', explode( $delimiter, $page_value ) );
-						// remove element(s) from list
-						foreach ( $remove as $rmv ) {
-							// go through each element and remove match(es)
-							$key = array_search( $rmv, $val_array );
-							if ( $key !== false ) {
-								unset( $val_array[$key] );
+							$tif->changeFieldValues( $field_name, $cur_value, $delimiter );
+						} elseif ( $val_modifier === '-' ) {
+							// get an array of elements to remove:
+							$remove = array_map( 'trim', explode( ",", $cur_value ) );
+							// process the current value:
+							$val_array = array_map( 'trim', explode( $delimiter, $page_value ) );
+							// remove element(s) from list
+							foreach ( $remove as $rmv ) {
+								// go through each element and remove match(es)
+								$key = array_search( $rmv, $val_array );
+								if ( $key !== false ) {
+									unset( $val_array[$key] );
+								}
 							}
+							// Convert modified array back to a comma-separated string value and modify
+							$cur_value = implode( $delimiter, $val_array );
+							if ( $cur_value === '' ) {
+								// HACK: setting an empty string prevents anything from happening at all.
+								// set a dummy string that evaluates to an empty string
+								$cur_value = '{{subst:lc: }}';
+							}
+							$tif->changeFieldValues( $field_name, $cur_value, $delimiter );
 						}
-						// Convert modified array back to a comma-separated string value and modify
-						$cur_value = implode( $delimiter, $val_array );
-						if ( $cur_value === '' ) {
-							// HACK: setting an empty string prevents anything from happening at all.
-							// set a dummy string that evaluates to an empty string
-							$cur_value = '{{subst:lc: }}';
-						}
-						$tif->changeFieldValues( $field_name, $cur_value, $delimiter );
 					}
 					// If the user is editing a page, and that page contains a call to
 					// the template being processed, get the current field's value
@@ -1984,6 +1984,7 @@ END;
 				$attribs['class'] = $form_field->getFieldArg( 'class' );
 			}
 			$text = Html::hidden( $form_field->getInputName(), $cur_value, $attribs );
+			$other_args = [];
 		} elseif ( $form_field->getInputType() !== '' &&
 				array_key_exists( $form_field->getInputType(), $this->mInputTypeHooks ) &&
 				$this->mInputTypeHooks[$form_field->getInputType()] != null ) {

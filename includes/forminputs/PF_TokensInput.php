@@ -129,7 +129,7 @@ class PFTokensInput extends PFFormInput {
 		if ( array_key_exists( 'size', $other_args ) ) {
 			$size = $other_args['size'];
 		} else {
-			$size = '100';
+			$size = '75';
 		}
 
 		$inputAttrs = [
