@@ -11,9 +11,9 @@ ARG PS_VERSION
 # get needed dependencies for this extension
 RUN sed -i s/80/8080/g /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
 
-RUN COMPOSER=composer.local.json composer require --no-update mediawiki/semantic-media-wiki ${SMW_VERSION}
-RUN curl -L https://github.com/wikimedia/mediawiki-extensions-DisplayTitle/tarball/${DT_VERSION} | tar xz --strip-components 1 --one-top-level=extensions/DisplayTitle
-RUN curl -L https://github.com/wikimedia/mediawiki-extensions-PageSchemas/tarball/${PS_VERSION} | tar xz --strip-components 1 --one-top-level=extensions/PageSchemas
+RUN composer-require.sh mediawiki/semantic-media-wiki ${SMW_VERSION}
+RUN get-github-extension.sh DisplayTitle ${DT_VERSION}
+RUN get-github-extension.sh PageSchemas ${PS_VERSION}
 RUN composer update 
 
 RUN chown -R www-data:www-data /var/www/html/extensions/SemanticMediaWiki/
