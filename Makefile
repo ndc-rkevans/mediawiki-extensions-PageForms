@@ -21,6 +21,10 @@ SMW_VERSION?=4.1.2
 DT_VERSION?=3.1
 PS_VERSION?=0.6.1
 
+# composer
+# Enables "composer update" inside of extension
+COMPOSER_EXT?=true
+
 # nodejs
 # Enables node.js related tests and "npm install"
 NODE_JS?=true
