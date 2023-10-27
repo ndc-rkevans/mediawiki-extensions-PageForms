@@ -446,7 +446,7 @@ class PFAutoeditAPI extends ApiBase {
 		$request = $editor->pfFauxRequest;
 		$editToken = $request->getVal( 'wpEditToken' );
 		$tokenOkay = $this->getUser()->matchEditToken( $editToken );
-		if ($tokenOkay ) {
+		if ( $tokenOkay ) {
 			$ctx = RequestContext::getMain();
 			$tempTitle = $ctx->getTitle();
 			$ctx->setTitle( $title );
