@@ -6,6 +6,7 @@
  * @author Yaron Koren
  * @author Mathias Lidal
  * @author Amr El-Absy
+ * @author thomas-topway-it (search-input)
  */
 
 /**
@@ -127,6 +128,10 @@ class PFTreeInput extends PFFormInput {
 			'cur_value' => $cur_value
 		];
 
+		if ( !empty( $other_args['search-input'] ) ) {
+			$params['search-input'] = true;
+		}
+
 		$treeInputAttrs = [
 			'id' => $input_name . 'treeinput',
 			'class' => 'pfTreeInput',
@@ -137,6 +142,15 @@ class PFTreeInput extends PFFormInput {
 
 		$text = Html::element( 'div', $treeInputAttrs, null );
 		$text .= "<input type='hidden' class='PFTree_data' name='" . $input_name . "'>";
+
+		if ( !empty( $params['search-input'] ) ) {
+			$text = Html::rawElement( 'div', [],
+				Html::element( 'input', [					
+					'id' => $input_name . 'treeinput_searchinput',
+					'class' => 'PFTreeSearchInput',
+				], null ) )
+			.  $text ;
+		}
 
 		$wrapperClass = 'pfTreeInputWrapper';
 		if ( $is_mandatory ) {

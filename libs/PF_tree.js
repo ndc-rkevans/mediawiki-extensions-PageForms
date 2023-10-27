@@ -7,6 +7,7 @@
  * @author Yaron Koren
  * @author Priyanshu Varshney
  * @author Amr El-Absy
+ * @author thomas-topway-it (search-input)
  */
 
  ( function ($, mw, pf) {
@@ -43,7 +44,34 @@
 			}
 		};
 
+		if ( 'search-input' in this.params && this.params['search-input'] ) {
+			options.plugins.push( 'search' );
+		}
+
 		return options;
+	};
+
+	TreeInput_proto.handleSearch = function ( tree, jsTree ) {
+		var escapedId = tree.id.replace('[','\\[')
+			.replace(']','\\]');
+
+		$(`#${escapedId}_searchinput`).keyup(function () {
+			var searchString = $(this).val();
+			var skip_async = true;
+			var show_only_matches = true;
+			var inside = null;
+			var append = false;
+			var show_only_matches_children = false;
+
+			jsTree.jstree('search',
+				searchString,
+				skip_async,
+				show_only_matches,
+				inside,
+				append,
+				show_only_matches_children
+			);
+		});
 	};
 
 	TreeInput_proto.check = function( data ) {
@@ -85,7 +113,9 @@ $.fn.extend({
 		var tree = new pf.TreeInput(this);
 		var options = tree.setOptions();
 
-		$(this).jstree(options);
+		var jsTree = $(this).jstree(options);
+
+		tree.handleSearch( tree, jsTree );
 
 		$(this).bind('select_node.jstree', function (evt, data) {
 			tree.check(data.node.text);
