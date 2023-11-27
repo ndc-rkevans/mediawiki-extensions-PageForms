@@ -14,3 +14,4 @@ extensions/
 .phpunit.result.cache
 .nyc_output
 coverage
+.env
