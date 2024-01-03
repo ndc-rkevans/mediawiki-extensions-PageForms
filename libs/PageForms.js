@@ -1754,9 +1754,14 @@ $(document).ready( function() {
 
 		$( 'body' ).initializeJSElements(false);
 
-		$('.multipleTemplateInstance').each( function() {
-			$(this).initializeJSElements(true);
-		});
+		// *** this does not seem necessary since 
+		// initializeJSElements encompasses multiple loaded
+		// instances as well and initializeJSElements is
+		// otherwise called when a new instance is created
+		// for that specific instance
+		// $('.multipleTemplateInstance').each( function() {
+		// 	$(this).initializeJSElements(true);
+		// });
 
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
