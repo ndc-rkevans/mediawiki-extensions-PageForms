@@ -1754,7 +1754,7 @@ $(document).ready( function() {
 
 		$( 'body' ).initializeJSElements(false);
 
-		// *** this does not seem necessary since 
+		// *** this does not seem necessary since
 		// initializeJSElements encompasses multiple loaded
 		// instances as well and initializeJSElements is
 		// otherwise called when a new instance is created
