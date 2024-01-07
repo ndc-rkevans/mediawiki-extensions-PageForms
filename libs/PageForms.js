@@ -1752,7 +1752,8 @@ $(document).ready( function() {
 			}
 		}
 
-		$( 'body' ).initializeJSElements(false);
+		var $multipleInstance = $('form#pfForm').closest('.multipleTemplateInstance');
+		$( 'body' ).initializeJSElements($multipleInstance !== null);
 
 		// *** this does not seem necessary since
 		// initializeJSElements encompasses multiple loaded
