@@ -1752,17 +1752,11 @@ $(document).ready( function() {
 			}
 		}
 
-		var $multipleInstance = $('form#pfForm').closest('.multipleTemplateInstance');
-		$( 'body' ).initializeJSElements($multipleInstance !== null);
-
-		// *** this does not seem necessary since
-		// initializeJSElements encompasses multiple loaded
-		// instances as well and initializeJSElements is
-		// otherwise called when a new instance is created
-		// for that specific instance
 		// $('.multipleTemplateInstance').each( function() {
 		// 	$(this).initializeJSElements(true);
 		// });
+		var $multipleInstance = $('form#pfForm').closest('.multipleTemplateInstance');
+		$( 'body' ).initializeJSElements($multipleInstance !== null);
 
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
