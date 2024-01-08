@@ -1752,11 +1752,11 @@ $(document).ready( function() {
 			}
 		}
 
-		$( 'body' ).initializeJSElements(false);
-
-		$('.multipleTemplateInstance').each( function() {
-			$(this).initializeJSElements(true);
-		});
+		// $('.multipleTemplateInstance').each( function() {
+		// 	$(this).initializeJSElements(true);
+		// });
+		var $multipleInstance = $('form#pfForm').closest('.multipleTemplateInstance');
+		$( 'body' ).initializeJSElements($multipleInstance !== null);
 
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
