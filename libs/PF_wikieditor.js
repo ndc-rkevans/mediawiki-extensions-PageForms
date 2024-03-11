@@ -13,46 +13,14 @@ window.ext.wikieditor = {
 			if ( mw ) {
 				var $input = $( '#' + inputId );
 
-				// The code below this "if" clause does not
-				// work for MW 1.34 and higher. Therefore, this
-				// alternative approach is needed. However, it
-				// requires the presence of an addWikiEditor()
-				// function, which, at the time of this writing
-				// (January 2021) had not yet been added to
-				// WikiEditor. Anyone who wants this code to run
-				// may thus need to patch the WikiEditor code
-				// themselves, with the following:
-				// https://github.com/Nikerabbit/mediawiki-extensions-WikiEditor/commit/9a1188d0850418d8ae64bd06b7f39d9a8cbf127f
-				if ( typeof( mw.addWikiEditor ) == 'function' ) {
-					mw.loader.using( [ 'ext.wikiEditor' ], function () {
-						mw.addWikiEditor( $input );
-					} );
-					return;
-				}
-
 				$.when(mw.loader.using('ext.wikiEditor'), $.ready).then(function () {
-					// load toolbar
-					$input.wikiEditor(
-						'addModule', require('./jquery.wikiEditor.toolbar.config.js')
-					);
-
-					// hide sig if required
-					if (mw.config.get('wgWikiEditorEnabledModules') && mw.config.get('wgWikiEditorEnabledModules.hidesig') === true) {
-						$input.wikiEditor('removeFromToolbar', {
-							'section': 'main',
-							'group': 'insert',
-							'tool': 'signature'
+					if (typeof (mw.addWikiEditor) == 'function') {
+						mw.loader.using(['ext.wikiEditor'], function () {
+							mw.addWikiEditor($input);
 						});
+						return;
 					}
-
-					// load dialogs
-					var dialogsConfig = require('./jquery.wikiEditor.dialogs.config.js');
-					// Replace icons
-					dialogsConfig.replaceIcons($input);
-					// Add dialogs module
-					$input.wikiEditor('addModule', dialogsConfig.getDefaultConfig());
 				});
-
 			}
 		} );
 	}
