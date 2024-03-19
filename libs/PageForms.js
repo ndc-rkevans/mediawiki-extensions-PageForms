@@ -1752,11 +1752,7 @@ $(document).ready( function() {
 			}
 		}
 
-		// $('.multipleTemplateInstance').each( function() {
-		// 	$(this).initializeJSElements(true);
-		// });
-		var $multipleInstance = $('form#pfForm').closest('.multipleTemplateInstance');
-		$( 'body' ).initializeJSElements($multipleInstance !== null);
+		$( 'body' ).initializeJSElements(false);
 
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
