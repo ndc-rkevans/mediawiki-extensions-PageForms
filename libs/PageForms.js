@@ -1164,7 +1164,7 @@ $.fn.addInstance = function( addAboveCurInstance ) {
 
 	// Global variable.
 	num_elements++;
-
+	
 	// Create the new instance
 	var $new_div = $wrapper
 		.find(".multipleTemplateStarter")
@@ -1513,6 +1513,9 @@ $.fn.initializeJSElements = function( partOfMultiple ) {
 
 	this.find('.pfComboBox').not('.multipleTemplateStarter .pfComboBox').each(function(){
 		var min_width = $(this).data('size');
+		if (min_width == null) {
+			return;
+		}
 		var input_width = $(this).val().length*11;
 		var inputType = new pf.ComboBoxInput({});
 		inputType.apply($(this));
@@ -1520,7 +1523,7 @@ $.fn.initializeJSElements = function( partOfMultiple ) {
 		inputType.$element.css("min-width", min_width);
 		inputType.$element.find("a").css("margin-left", "-1px");
 		$(this).after(inputType.$element);
-		$(this).remove()
+		$(this).remove();
 	});
 
 	var tokens = new pf.select2.tokens();
@@ -1754,6 +1757,10 @@ $(document).ready( function() {
 
 		$( 'body' ).initializeJSElements(false);
 
+		$('.multipleTemplateInstance').each( function() {
+			$(this).initializeJSElements(true);
+		}); 
+		
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
 		});
