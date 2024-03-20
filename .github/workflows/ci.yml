@@ -18,68 +18,58 @@ jobs:
       matrix:
         include:
           - mediawiki_version: '1.35'
-            smw_version: '4.1.0'
-            php_version: 7.4
-            dt_version: 3.1
-            ps_version: 0.6.1
+            smw_version: '4.1.3'    # SemanticMediaWiki
+            php_version: 7.4        # PHP
+            dt_version: 3.1         # DisplayTitle
+            ps_version: 0.6.1       # PageSchemas
             database_type: mysql
             database_image: "mysql:5.7"
             coverage: true
             experimental: false
           - mediawiki_version: '1.35'
-            smw_version: '4.1.2'
+            smw_version: '4.1.3'
             php_version: 7.4
             dt_version: 3.1
             ps_version: 0.6.1
             database_type: sqlite
-            database_image: "mysql:5.7"
-            coverage: true
-            experimental: false
-          - mediawiki_version: '1.35'
-            smw_version: dev-master
-            php_version: 7.4
-            dt_version: 3.1
-            ps_version: 0.6.1
-            database_type: mysql
-            database_image: "mysql:5.7"
             coverage: false
             experimental: false
           - mediawiki_version: '1.39'
-            smw_version: dev-master
+            smw_version: '4.1.3'
             php_version: 8.1
             dt_version: 4.0.2
-            ps_version: 0.8
+            ps_version: 0.9.1
             database_type: mysql
             database_image: "mysql:8"
             coverage: false
             experimental: true
-          - mediawiki_version: '1.40'
-            smw_version: dev-master
-            php_version: 8.1
-            dt_version: 4.0.2
-            ps_version: 0.8
-            database_type: mysql
-            database_image: "mysql:8"
-            coverage: false
-            experimental: true
-          - mediawiki_version: '1.40'
-            smw_version: dev-master
-            php_version: 8.1
-            dt_version: 4.0.2
-            ps_version: 0.8
-            database_type: mysql
-            database_image: "mariadb:latest"
-            coverage: false
-            experimental: true
-          - mediawiki_version: '1.40'
-            smw_version: dev-master
-            php_version: 8.1
-            dt_version: 4.0.2
-            ps_version: 0.8
-            database_type: postgres
-            database_image: "postgres:14"
-            coverage: false
-            experimental: true
+          # - mediawiki_version: '1.40'
+          #   smw_version: dev-master
+          #   php_version: 8.1
+          #   dt_version: 4.0.2
+          #   ps_version: 0.8
+          #   database_type: mysql
+          #   database_image: "mysql:8"
+          #   coverage: false
+          #   experimental: true
+          # - mediawiki_version: '1.40'
+          #   smw_version: dev-master
+          #   php_version: 8.1
+          #   dt_version: 4.0.2
+          #   ps_version: 0.8
+          #   database_type: mysql
+          #   database_image: "mariadb:latest"
+          #   coverage: false
+          #   experimental: true
+          # - mediawiki_version: '1.40'
+          #   smw_version: dev-master
+          #   php_version: 8.1
+          #   dt_version: 4.0.2
+          #   ps_version: 0.8
+          #   database_type: postgres
+          #   database_image: "postgres:14"
+          #   coverage: false
+          #   experimental: true
 
     env:
       MW_VERSION: ${{ matrix.mediawiki_version }}
