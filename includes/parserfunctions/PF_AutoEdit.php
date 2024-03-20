@@ -167,6 +167,8 @@ class PFAutoEdit {
 				$attrs['title'] = $inTooltip;
 			}
 			$linkElement = Html::rawElement( 'a', $attrs, $linkString );
+		} elseif ( $linkType == 'instant' ) {
+			$linkElement = Html::rawElement( 'span', [ 'class' => 'autoedit-trigger-instant' ], $linkString );
 		} else {
 			$linkElement = Html::rawElement( 'span', [ 'class' => $classString ], $linkString );
 		}

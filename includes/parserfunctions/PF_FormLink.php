@@ -175,18 +175,24 @@ class PFFormLink {
 		if ( !empty( $inQueryArr ) ) {
 			// Special handling for the buttons - query string
 			// has to be turned into hidden inputs.
-			if ( $inLinkType == 'button' || $inLinkType == 'post button' ) {
-				$query_components = explode( '&', http_build_query( $inQueryArr, '', '&' ) );
+			switch ( $inLinkType ) {
+				case 'button':
+				case 'post button' :
+					$query_components = explode( '&', http_build_query( $inQueryArr, '', '&' ) );
 
-				foreach ( $query_components as $query_component ) {
-					$var_and_val = explode( '=', $query_component, 2 );
-					if ( count( $var_and_val ) == 2 ) {
-						$hidden_inputs .= Html::hidden( urldecode( $var_and_val[0] ), urldecode( $var_and_val[1] ) );
+					foreach ( $query_components as $query_component ) {
+						$var_and_val = explode( '=', $query_component, 2 );
+						if ( count( $var_and_val ) == 2 ) {
+							$hidden_inputs .= Html::hidden( urldecode( $var_and_val[0] ), urldecode( $var_and_val[1] ) );
+						}
 					}
-				}
-			} else {
-				$link_url .= ( strstr( $link_url, '?' ) ) ? '&' : '?';
-				$link_url .= str_replace( '+', '%20', http_build_query( $inQueryArr, '', '&' ) );
+					break;
+				case 'instant':
+					break;
+				default:
+					$link_url .= ( strstr( $link_url, '?' ) ) ? '&' : '?';
+					$link_url .= str_replace( '+', '%20', http_build_query( $inQueryArr, '', '&' ) );
+					break;
 			}
 		}
 		if ( $inLinkType == 'button' || $inLinkType == 'post button' ) {
