@@ -72,7 +72,6 @@
 			! confirm( mw.msg( 'pf_autoedit_anoneditwarning' ) ) ) {
 			return;
 		}
-
 		var $jtrigger = jQuery( this );
 		var $jautoedit = $jtrigger.closest( '.autoedit' );
 		var $jeditdata = $jautoedit.find( 'form.autoedit-data' );
@@ -91,6 +90,9 @@
 
 	jQuery( document ).ready( function ( $ ) {
 		$( '.autoedit-trigger' ).click( autoEditHandler );
+		$( '.autoedit-trigger-instant' ).each( function() {
+			autoEditHandler.bind( this )();
+		});
 	} );
 
 }( jQuery, mediaWiki ) );
