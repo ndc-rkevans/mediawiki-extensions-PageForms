@@ -1164,7 +1164,6 @@ $.fn.addInstance = function( addAboveCurInstance ) {
 
 	// Global variable.
 	num_elements++;
-	
 	// Create the new instance
 	var $new_div = $wrapper
 		.find(".multipleTemplateStarter")
@@ -1513,6 +1512,8 @@ $.fn.initializeJSElements = function( partOfMultiple ) {
 
 	this.find('.pfComboBox').not('.multipleTemplateStarter .pfComboBox').each(function(){
 		var min_width = $(this).data('size');
+		//check min_witdth - issue #53 -comboBox with two dropdowns if value present
+		//link: https://github.com/gesinn-it-pub/mediawiki-extensions-PageForms/issues/53
 		if (min_width == null) {
 			return;
 		}
@@ -1756,11 +1757,9 @@ $(document).ready( function() {
 		}
 
 		$( 'body' ).initializeJSElements(false);
-
 		$('.multipleTemplateInstance').each( function() {
 			$(this).initializeJSElements(true);
 		}); 
-		
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
 		});
