@@ -1758,8 +1758,8 @@ $(document).ready( function() {
 
 		$( 'body' ).initializeJSElements(false);
 		$('.multipleTemplateInstance').each( function() {
-			$(this).initializeJSElements(true);
-		}); 
+				$(this).initializeJSElements(true);
+		});
 		$('.multipleTemplateAdder').click( function() {
 			$(this).addInstance( false );
 		});
