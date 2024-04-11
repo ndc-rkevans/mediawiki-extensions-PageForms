@@ -25,7 +25,10 @@ class PFUploadForm extends HTMLForm {
 	/** @var string */
 	private $mDestFile;
 
-	public function __construct( $options = [] ) {
+	public function __construct( $options = [], IContextSource $context = null ) {
+		if ( $context instanceof IContextSource ) {
+            $this->setContext( $context );
+        }
 		$this->mWatch = !empty( $options['watch'] );
 		$this->mForReUpload = !empty( $options['forreupload'] );
 		$this->mSessionKey = isset( $options['sessionkey'] )
@@ -41,8 +44,8 @@ class PFUploadForm extends HTMLForm {
 			+ $this->getDescriptionSection()
 			+ $this->getOptionsSection();
 
-		Hooks::run( 'UploadFormInitDescriptor', [ &$descriptor ] );
-		parent::__construct( $descriptor, 'upload' );
+		$this->getHookRunner()->onUploadFormInitDescriptor( $descriptor );
+		parent::__construct( $descriptor, $this->getContext(), 'upload' );
 
 		# Set some form properties
 		$this->setSubmitText( $this->msg( 'uploadbtn' )->text() );
