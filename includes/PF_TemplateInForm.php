@@ -45,6 +45,7 @@ class PFTemplateInForm {
 	private $mValuesFromSubmit = [];
 	private $mNumInstancesFromSubmit = 0;
 	private $mPageCallsThisTemplate = false;
+	private $mNumSeenInstancesOnThisPage = null;
 	private $mInstanceNum = 0;
 	private $mAllInstancesPrinted = false;
 	private $mGridValues = [];
@@ -348,8 +349,33 @@ class PFTemplateInForm {
 				}
 			}
 			$this->mNumInstancesFromSubmit = count( $valuesFromSubmitKeys );
-			if ( $this->mNumInstancesFromSubmit > $this->mInstanceNum ) {
-				$instanceKey = $valuesFromSubmitKeys[$this->mInstanceNum];
+			# First search if there are keys \d+a? (keys are made of an integer plus optional letter a),
+			# return them if the main loop modify existing templates
+			for ( $i = 0; $i < $this->mNumInstancesFromSubmit; $i++ ) {
+				$intkey = preg_filter( '/^(\d+)a?$/', '$1', $valuesFromSubmitKeys[$i] );
+				if ( $intkey !== null ) {
+					$intkey = (int)$intkey;
+				}
+				if ( $intkey !== null && $this->mNumSeenInstancesOnThisPage !== null && $intkey < $this->mNumSeenInstancesOnThisPage ) {
+					if ( $intkey === $this->mInstanceNum ) {
+						$instanceKey = $valuesFromSubmitKeys[$intkey];
+						$this->mValuesFromSubmit = $allValuesFromSubmit[$instanceKey];
+						return;
+					}
+					unset( $valuesFromSubmitKeys[$i] );
+				} else {
+					break;
+				}
+			}
+			# The main loop is still in existing templates
+			if ( $this->mInstanceNum < $this->mNumSeenInstancesOnThisPage ) {
+				return;
+			}
+			# Now the main loop is adding new templates
+			$valuesFromSubmitKeys = array_values( $valuesFromSubmitKeys );
+			$offset = $this->mInstanceNum - $this->mNumSeenInstancesOnThisPage;
+			if ( $offset < count( $valuesFromSubmitKeys ) ) {
+				$instanceKey = $valuesFromSubmitKeys[$offset];
 				$this->mValuesFromSubmit = $allValuesFromSubmit[$instanceKey];
 			}
 		} else {
@@ -518,6 +544,9 @@ class PFTemplateInForm {
 			[ '\/', '\(', '\)', '\^' ],
 			$this->mSearchTemplateStr );
 		$this->mPageCallsThisTemplate = preg_match( '/{{' . $this->mPregMatchTemplateStr . '\s*[\|}]/i', str_replace( '_', ' ', $existing_page_content ) );
+		if ( $this->mPageCallsThisTemplate ) {
+			$this->mNumSeenInstancesOnThisPage = $this->mInstanceNum + 1;
+		}
 	}
 
 	function checkIfAllInstancesPrinted( $form_submitted, $source_is_page ) {
